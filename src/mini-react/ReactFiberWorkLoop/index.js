@@ -1,6 +1,6 @@
 import { updateClassComponent, updateFragmentComponent, updateFunctionComponent, updateHostComponent, updateHostTextComponent } from "../ReactFiberReconciler";
 import { ClassComponent, Fragment, FunctionComponent, HostComponent, HostText } from "../ReactWorkTags";
-import { Placement } from "../utils";
+import { Placement, Update, updateNode } from "../utils";
 import {scheduleCallback} from '../Scheduler';
 
 
@@ -10,14 +10,12 @@ let workInProgressRoot = null;
 export function scheduleUpdateOnFiber(fiber) {
     workInProgress = fiber;
     workInProgressRoot = fiber;
-
     scheduleCallback(workLoop);
 };
 
 export function performUnitOfWork() {
     const { tag } = workInProgress;
     // 更新当前组件
-    console.log(tag);
     switch (tag) {
         case HostComponent:
             updateHostComponent(workInProgress);
@@ -80,6 +78,12 @@ function commitWorker(wip) {
     if(flags & Placement && stateNode) {
         parentNode.appendChild(stateNode);
     }
+    if(flags & Update && stateNode) {
+        updateNode(stateNode, wip?.alternate?.props, wip.props);
+    }
+    if(wip.deletions) {
+        commitDeltions(wip.deletions, stateNode || parentNode);
+    }
     // 2. 更新子节点
     commitWorker(wip.child);
     // 3. 更新兄弟节点
@@ -98,4 +102,19 @@ function getParentNode(wip) {
       }
       tem = tem.return;
     }
+  }
+
+  function commitDeltions(deltetions, stateNode) {
+    for(let i = 0; i < deltetions.length; i++) {
+        const child = getChildNode(deltetions[i]);
+        stateNode.removeChild(child);
+    }
+  }
+
+  function getChildNode(fiber) {
+    let temp = fiber.stateNode;
+    while(!temp) {
+        temp = fiber.child.stateNode;
+    }
+    return temp;
   }

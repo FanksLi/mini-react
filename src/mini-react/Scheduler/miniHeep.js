@@ -74,7 +74,6 @@ function downward(node, i) {
 }
 
 function compare(a, b) {
-    return a - b;
     const diff = a.sortIndex - b.sortIndex;
     return diff !== 0 ? diff : a.id - b.id; 
 }
@@ -83,12 +82,12 @@ function swap(node, index1, index2) {
     [node[index2], node[index1]] = [node[index1], node[index2]];
 }
 
-const arr = [];
+// const arr = [];
 
-push(arr, 10);
-push(arr, 2);
-push(arr, 3);
-push(arr, 5);
-push(arr, 6);
-// pop(arr, 5);
-console.log(arr);
+// push(arr, 10);
+// push(arr, 2);
+// push(arr, 3);
+// push(arr, 5);
+// push(arr, 6);
+// // pop(arr, 5);
+// console.log(arr);

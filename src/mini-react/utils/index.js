@@ -41,14 +41,61 @@
  export const MutationMask = /*                 */ 0b000010010011110;
  export const LayoutMask = /*                   */ 0b000000010100100;
 
- export function updateNode(node, nextVal) {
-    Object.keys(nextVal).forEach(key => {
-        if(key === 'children') {
-            if(typeof nextVal[key] === 'string' || typeof nextVal[key] === 'number') {
-                node.textContent = nextVal[key];
-            }
-        } else {
-            node[key] = nextVal[key];
-        }
-    })
+
+
+ export function isStr(s) {
+  return typeof s === "string";
 }
+
+export function isStringOrNumber(s) {
+  return typeof s === "string" || typeof s === "number";
+}
+
+export function isFn(fn) {
+  return typeof fn === "function";
+}
+
+export function isArray(arr) {
+  return Array.isArray(arr);
+}
+
+export function isUndefined(s) {
+  return s === undefined;
+}
+// old props {className: 'red', id: '_id'}
+// new props {className: 'green'}
+export function updateNode(node, prevVal={}, nextVal={}) {
+    Object.keys(prevVal)
+      // .filter(k => k !== "children")
+      .forEach((k) => {
+        if (k === "children") {
+          // 有可能是文本
+          if (isStringOrNumber(prevVal[k])) {
+            node.textContent = "";
+          }
+        } else if (k.slice(0, 2) === "on") {
+          const eventName = k.slice(2).toLocaleLowerCase();
+          node.removeEventListener(eventName, prevVal[k]);
+        } else {
+          if (!(k in nextVal)) {
+            node[k] = "";
+          }
+        }
+      });
+  
+    Object.keys(nextVal)
+      // .filter(k => k !== "children")
+      .forEach((k) => {
+        if (k === "children") {
+          // 有可能是文本
+          if (isStringOrNumber(nextVal[k])) {
+            node.textContent = nextVal[k] + "";
+          }
+        } else if (k.slice(0, 2) === "on") {
+          const eventName = k.slice(2).toLocaleLowerCase();
+          node.addEventListener(eventName, nextVal[k]);
+        } else {
+          node[k] = nextVal[k];
+        }
+      });
+  }

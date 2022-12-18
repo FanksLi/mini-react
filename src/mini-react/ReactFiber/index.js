@@ -21,6 +21,10 @@ export function createFiber(vNode, returnFiber) {
         flags: Placement,
 
         index: null,
+        // old fiber
+        alternate: null,
+        // 存的是头部hook，针对的函数组件
+        memorizedState: null,
     };
 
     const { type } = vNode;
@@ -36,7 +40,6 @@ export function createFiber(vNode, returnFiber) {
         fiber.tag = Fragment;
     }
 
-    console.log(fiber);
 
     return fiber;
 }

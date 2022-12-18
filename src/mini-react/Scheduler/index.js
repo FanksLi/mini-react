@@ -33,7 +33,7 @@ channel.port1.onmessage = () => {
 }
 
 function workLoop() {
-    const currentTask = peek(taskQueue);
+    let currentTask = peek(taskQueue);
 
     while(currentTask) {
         const callback = currentTask.callback;
