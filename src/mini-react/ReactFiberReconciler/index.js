@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { createFiber } from "../ReactFiber";
 import {Update, updateNode} from '../utils';
 import {renderWithHooks} from '../hooks';
@@ -67,26 +68,60 @@ export function updateFunctionComponent(wip) {
 
 export function updateClassComponent(wip) {
   const {type, props} = wip;
+=======
+import { updateNode } from '../utils';
+import { renderWithHooks } from '../hooks';
+import { reconcileChildren } from '../ReactchildFiber';
+
+export function updateHostComponent(wip) {
+  if (!wip.stateNode) {
+    wip.stateNode = document.createElement(wip.type);
+    updateNode(wip.stateNode, {}, wip.props);
+  }
+  reconcileChildren(wip, wip.props.children);
+};
+
+export function updateFunctionComponent(wip) {
+  renderWithHooks(wip);
+  const { type, props } = wip;
+  const children = type(props);
+  reconcileChildren(wip, children);
+};
+
+export function updateClassComponent(wip) {
+  const { type, props } = wip;
+>>>>>>> Stashed changes
   const Element = new type(props);
   const children = Element.render();
   reconcileChildren(wip, children);
 };
 
 export function updateFragmentComponent(wip) {
+<<<<<<< Updated upstream
   const {props} = wip;
+=======
+  const { props } = wip;
+>>>>>>> Stashed changes
   reconcileChildren(wip, props.children);
 };
 
 export function updateHostTextComponent(wip) {
+<<<<<<< Updated upstream
   const {props} = wip;
+=======
+  const { props } = wip;
+>>>>>>> Stashed changes
 
   wip.stateNode = document.createTextNode(props.children);
 };
 
+<<<<<<< Updated upstream
 // 节点复用的条件
 function sameNode(a, b) {
   return a && b && a.type === b.type && a.key === b.key;
 }
+=======
+>>>>>>> Stashed changes
 
 
 
