@@ -41,12 +41,9 @@
  export const MutationMask = /*                 */ 0b000010010011110;
  export const LayoutMask = /*                   */ 0b000000010100100;
 
-<<<<<<< Updated upstream
-=======
  export const HookLayout = 0b010;
  export const HookPassive = 0b100;
 
->>>>>>> Stashed changes
 
 
  export function isStr(s) {
@@ -104,8 +101,6 @@ export function updateNode(node, prevVal={}, nextVal={}) {
           node[k] = nextVal[k];
         }
       });
-<<<<<<< Updated upstream
-=======
   }
 
   export function areHookInputsEqual(nextDeps, prevDeps) {
@@ -122,5 +117,4 @@ export function updateNode(node, prevVal={}, nextVal={}) {
       }
 
       return true;
->>>>>>> Stashed changes
   }
