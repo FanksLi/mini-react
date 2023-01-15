@@ -76,7 +76,15 @@ function commitWorker(wip) {
     const {flags, stateNode} = wip;
     const parentNode = getParentNode(wip.return);
     if(flags & Placement && stateNode) {
+<<<<<<< Updated upstream
         parentNode.appendChild(stateNode);
+=======
+        // 0 1 2 3 4
+        // 2 1 3 4
+        const before = getHostSibling(wip.sibling);
+        intertOrAppendPlacementNode(stateNode, before, parentNode);
+        // parentNode.appendChild(stateNode);
+>>>>>>> Stashed changes
     }
     if(flags & Update && stateNode) {
         updateNode(stateNode, wip?.alternate?.props, wip.props);
@@ -84,6 +92,14 @@ function commitWorker(wip) {
     if(wip.deletions) {
         commitDeltions(wip.deletions, stateNode || parentNode);
     }
+<<<<<<< Updated upstream
+=======
+
+    if(wip.tag === FunctionComponent) {
+        invokeHookk(wip);
+    }
+
+>>>>>>> Stashed changes
     // 2. 更新子节点
     commitWorker(wip.child);
     // 3. 更新兄弟节点
@@ -117,4 +133,43 @@ function getParentNode(wip) {
         temp = fiber.child.stateNode;
     }
     return temp;
+<<<<<<< Updated upstream
+=======
+  }
+
+
+  function getHostSibling(sibling) {
+        while(sibling) {
+            if(sibling.stateNode && !(sibling.flags & Placement)) {
+                return sibling.stateNode;
+            }
+            sibling = sibling.sibling;
+        }
+
+        return null;
+  }
+
+  function intertOrAppendPlacementNode(stateNode, before, parentNode) {
+    if(before) {
+        parentNode.intertBefore(before, stateNode);
+    } else {
+        parentNode.append(stateNode);
+    }
+  }
+
+  function invokeHookk(wip) {
+    const {updateQueueOfEffect, updateQueueOfLayout} = wip;
+
+    for(let i = 0; i < updateQueueOfLayout.length; i++) {
+        const {create} = updateQueueOfLayout[i];
+        create();
+    }
+
+    for(let i = 0; i < updateQueueOfEffect.length; i++) {
+        const {create} = updateQueueOfEffect[i];
+        scheduleCallback(() => {
+            create();
+        });
+    }
+>>>>>>> Stashed changes
   }
