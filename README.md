@@ -1,3 +1,2 @@
 # mini-react
 
-hello word!!
